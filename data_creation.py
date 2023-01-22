@@ -21,8 +21,8 @@ for animal in animal_list:
         picurl = photo.get('url_c')
 
         try:
-            if (len(list(pathname.glob('*.jpg'))) < 500):
-                if (count == 0):
+            if len(list(pathname.glob('*.jpg'))) < 500:
+                if count == 0:
                     Path.mkdir(pathname, parents=True)
                 request.urlretrieve(picurl, pathname / f"{count + 1}.jpg")
             else:
