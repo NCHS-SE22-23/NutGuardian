@@ -1,0 +1,9 @@
+import tensorflow as tf
+from pathlib import Path
+from PIL import Image
+#USE TF LITE FOR RASPBERRY PI
+
+data = Path('images')
+birds = list(data.glob('bird/*'))
+for i in range(5):
+    Image.open(birds[i])
