@@ -1,8 +1,6 @@
 from keras.models import Sequential
 from keras.layers import Flatten, Dense, MaxPooling2D, Conv2D, Rescaling, Activation
 
-#USE TF LITE FOR RASPBERRY PI
-
 def create_model():
     model = Sequential()
 
@@ -11,7 +9,7 @@ def create_model():
     model.add(Conv2D(32, 3, padding='same'))
     model.add(Activation('relu'))
     model.add(MaxPooling2D())
-    
+
     model.add(Conv2D(64, 3, padding='same'))
     model.add(Activation('relu'))
     model.add(MaxPooling2D())
