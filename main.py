@@ -8,6 +8,8 @@ from model import create_model
 from data_creator import download_flickr_data
 
 
+#USE TF LITE FOR RASPBERRY PI
+
 start = time.time()
 
 #Downloading the data
