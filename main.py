@@ -46,7 +46,7 @@ model.compile(
     metrics=['accuracy']
 )
 
-checkpoint_dir = Path.cwd() / f'trained models/mod1.ckpt'
+checkpoint_dir = Path.cwd() / f'trained models/model1.ckpt'
 callback = ModelCheckpoint(
     filepath=checkpoint_dir,
     save_weights_only=True,
