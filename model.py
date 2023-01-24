@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.layers import Flatten, Dense, MaxPooling2D, Conv2D, Rescaling, Activation, Dropout
+from keras.layers import Flatten, Dense, MaxPooling2D, Conv2D, Rescaling, Activation, Dropout, InputLayer
 from keras.callbacks import EarlyStopping
 from pathlib import Path
 import matplotlib.pyplot as plt
@@ -8,21 +8,37 @@ import matplotlib.pyplot as plt
 def barbecue():
     model = Sequential()
 
+    model.add(InputLayer(input_shape=(256, 256, 3)))
     model.add(Rescaling(1.0/255))
 
+    model.add(Conv2D(32, 3, padding='same'))
+    model.add(Activation('relu'))
     model.add(Conv2D(32, 3, padding='same'))
     model.add(Activation('relu'))
     model.add(MaxPooling2D())
     
     model.add(Conv2D(64, 3, padding='same'))
     model.add(Activation('relu'))
+    model.add(Conv2D(64, 3, padding='same'))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D())
+
+    model.add(Conv2D(128, 3, padding='same'))
+    model.add(Activation('relu'))
+    model.add(Conv2D(128, 3, padding='same'))
+    model.add(Activation('relu'))
     model.add(MaxPooling2D())
 
     model.add(Flatten())
-    model.add(Dense(64, activation='relu'))
+
+    model.add(Dense(256))
+    model.add(Activation('relu'))
+    model.add(Dense(128))
+    model.add(Activation('relu'))
     model.add(Dropout(0.5))
 
-    model.add(Dense(1, activation='sigmoid'))
+    model.add(Dense(1))
+    model.add(Activation('sigmoid'))
 
     return model
 
@@ -36,7 +52,7 @@ def munch(cnn, training, validation):
 
     earlystopping = EarlyStopping(
         monitor="val_loss",
-        patience=3,
+        patience=2,
         restore_best_weights=True
     )
 
@@ -67,4 +83,4 @@ def taste_test_results(output):
 
 #Saves the weights of the model
 def learn_recipe(cnn, model_number):
-    cnn.save_weights(Path.cwd() / f'trained models/model' + str(model_number) + '.h5')
+    cnn.save_weights(Path.cwd() / 'trained models/model' + str(model_number) + '.h5')

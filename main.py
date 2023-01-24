@@ -23,4 +23,4 @@ history = munch(model, train_ds, val_ds)
 taste_test_results(history)
 
 #Saving the model's weights
-learn_recipe(model, 1)
+learn_recipe(model, 2)
