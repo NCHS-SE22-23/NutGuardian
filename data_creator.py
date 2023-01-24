@@ -2,7 +2,8 @@ from pathlib import Path
 from urllib import request
 import flickrapi
 
-def download_flickr_data():
+#Downloads the dataset from Flickr
+def prepare_ingredients():
     key = u'05fb00bf76508cebe1dc6ec032fc7685'
     secret = u'8dbd5e11cbf33512'
     flickr = flickrapi.FlickrAPI(key, secret)
