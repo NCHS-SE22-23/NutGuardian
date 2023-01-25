@@ -19,8 +19,8 @@ model = barbecue()
 #Compiling and training the model
 history = munch(model, train_ds, val_ds)
 
+#Saving the model's weights
+learn_recipe(model)
+
 #Plotting accuracy
 taste_test_results(history)
-
-#Saving the model's weights
-learn_recipe(model, 2)
