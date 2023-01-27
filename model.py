@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.layers import Flatten, Dense, MaxPooling2D, Conv2D, Rescaling, Activation, Dropout, InputLayer
+from keras.layers import Flatten, Rescaling, Dense, MaxPooling2D, Conv2D, Dropout, InputLayer
 from keras.callbacks import EarlyStopping
 from pathlib import Path
 import matplotlib.pyplot as plt
@@ -11,34 +11,19 @@ def barbecue():
     model.add(InputLayer(input_shape=(256, 256, 3)))
     model.add(Rescaling(1.0/255))
 
-    model.add(Conv2D(32, 3, padding='same'))
-    model.add(Activation('relu'))
-    model.add(Conv2D(32, 3, padding='same'))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D())
-    
-    model.add(Conv2D(64, 3, padding='same'))
-    model.add(Activation('relu'))
-    model.add(Conv2D(64, 3, padding='same'))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D())
+    model.add(Conv2D(32, 3, activation='relu'))
+    model.add(Conv2D(32, 3, activation='relu'))
+    model.add(MaxPooling2D(2, 2))
 
-    model.add(Conv2D(128, 3, padding='same'))
-    model.add(Activation('relu'))
-    model.add(Conv2D(128, 3, padding='same'))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D())
+    model.add(Conv2D(64, 3, activation='relu'))
+    model.add(Conv2D(64, 3, activation='relu'))
+    model.add(MaxPooling2D(2, 2))
 
     model.add(Flatten())
-
-    model.add(Dense(256))
-    model.add(Activation('relu'))
-    model.add(Dense(128))
-    model.add(Activation('relu'))
+    model.add(Dense(512, activation='relu'))
     model.add(Dropout(0.5))
 
-    model.add(Dense(1))
-    model.add(Activation('sigmoid'))
+    model.add(Dense(1, activation='sigmoid'))
 
     return model
 
@@ -52,7 +37,7 @@ def munch(cnn, training, validation):
 
     earlystopping = EarlyStopping(
         monitor="val_loss",
-        patience=2,
+        patience=5,
         restore_best_weights=True
     )
 
@@ -61,6 +46,7 @@ def munch(cnn, training, validation):
 #Plots the accuracies and losses
 def taste_test_results(output):
     plt.figure(figsize=(10, 5))
+    plt.title("Taste Test Results")
 
     plt.subplot(1, 2, 1)
     plt.plot(output.history['accuracy'], label='Training Accuracy')
@@ -78,9 +64,8 @@ def taste_test_results(output):
     plt.ylim([0, 1])
     plt.legend(loc='lower right')
 
-    plt.title("Taste Test Results")
     plt.show()
 
 #Saves the weights of the model
-def learn_recipe(cnn, model_number):
-    cnn.save_weights(Path.cwd() / 'trained models/model' + str(model_number) + '.h5')
+def learn_recipe(cnn):
+    cnn.save_weights(Path.cwd() / 'trained models/model2.h5')
