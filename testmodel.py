@@ -3,7 +3,9 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense, BatchNormalization
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-from keras.preprocessing import image
+from keras.utils import load_img, img_to_array
+from pathlib import Path
+from PIL import Image
 
 model = Sequential()
 
@@ -32,14 +34,27 @@ model.compile(loss='categorical_crossentropy', optimizer='rmsprop', metrics=['ac
 
 model.load_weights('model.h5')
 
-img_path = './testimages/testsquirrel.jpeg'
+plt.figure(figsize=(8.5, 8.5))
 
-img = mpimg.imread(img_path)
+for count, img_path in enumerate(Path('testimages').iterdir()):
+    img = mpimg.imread(img_path)
+    img = load_img(img_path, target_size=(128, 128))
+    img_array = img_to_array(img)
+    img_batch = np.expand_dims(img_array, axis=0)
+    img_batch = img_batch / 255.0
 
-plt.imshow(img)
+    prediction_array = model.predict(img_batch, verbose=0)
+    
+    prediction = np.argmax(prediction_array[0])
+
+    title = 'bird'
+
+    if prediction == 1:
+        title = 'squirrel'
+
+    plt.subplot(4, 5, count + 1)
+    plt.imshow(img)
+    plt.title('Actual: ' + img_path.stem[1:] + '\nPred: ' + title + '\n' + '%.3f'%prediction_array[0][prediction])
+
+plt.tight_layout()
 plt.show()
-
-img = image.load_img(img_path, target_size=(128, 128))
-img_array = image.img_to_array(img)
-img_batch = np.expand_dims(img_array, axis=0)
-img_batch = img_batch / 255.0
