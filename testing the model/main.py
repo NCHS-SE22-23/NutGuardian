@@ -35,7 +35,7 @@ model.load_weights('model.h5')
 
 plt.figure(figsize=(8.5, 8.5))
 
-for count, img_path in enumerate(Path('testimages').iterdir()):
+for count, img_path in enumerate(Path('/Users/neilganguly/Documents/School-Github/NutGuardian/testing the model/testimages').iterdir()):
     img = mpimg.imread(img_path)
     img = load_img(img_path, target_size=(128, 128))
     img_array = img_to_array(img)
