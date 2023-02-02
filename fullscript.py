@@ -5,5 +5,4 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from keras.utils import load_img, img_to_array
 from pathlib import Path
-import picamera
 
