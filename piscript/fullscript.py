@@ -1,3 +1,9 @@
+# Neil Ganguly, Harry Yu, Kynan McCabe-Wild, Collin O'Connor
+# Nut Guardian
+# This is the python file that will go into the raspberry pi and run the code that we need to ID squirrels vs birds
+# 2/6/2023
+
+# Imports
 import numpy as np
 import time
 import subprocess
@@ -9,7 +15,9 @@ import matplotlib.image as mpimg
 from keras.utils import load_img, img_to_array
 from pathlib import Path
 from picamera import PiCamera
+from gpiozero import MotionSensor
 
+# Instantiate the model to get it running
 model = Sequential()
 
 model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(128, 128, 3)))
@@ -35,7 +43,14 @@ model.add(Dense(2, activation='softmax'))
 
 model.compile(loss='categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
 
+# Loading the relevant weights so the model will work
 model.load_weights('../model.h5')
+
+# Setting up the GPIO board so we can use the pin board
+pir = MotionSensor(2)
+
+# Once we detect motion, take pictures and send them to the neural network
+pir.wait_for_motion
 
 for i in range(5):
     camera = PiCamera()
