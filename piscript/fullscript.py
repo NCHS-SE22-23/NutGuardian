@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from keras.utils import load_img, img_to_array
 from pathlib import Path
-from picamera import PiCamera
+import cv2
 from gpiozero import MotionSensor
 import pygame
 
@@ -49,8 +49,7 @@ model.load_weights('../model.h5')
 
 # Setting up the GPIO board so we can use the pin board
 pir = MotionSensor(2) # the int is the power pin for the motionsensor
-camera = PiCamera()
-camera.framerate = 10
+vid = cv2.VideoCapture(0)
 
 # Setting up the audio system assuming we have already set the default device
 pygame.mixer.init()
@@ -61,9 +60,7 @@ while True:
     pir.wait_for_motion(timeout=None)
 
     # Recording the 30 pictures 
-    camera.start_recording('video.h264')
-    time.sleep(3)
-    camera.stop_recording()
+    ret, frame = vid.read()
 
     # Creates the path for frames
     path = Path('frames').absolute()
