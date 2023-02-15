@@ -35,7 +35,7 @@ model.load_weights('model.h5')
 
 plt.figure(figsize=(8.5, 8.5))
 
-for count, img_path in enumerate(Path('/Users/neilganguly/Documents/School-Github/NutGuardian/testing the model/testimages').iterdir()):
+for count, img_path in enumerate(Path('/Users/neilganguly/Documents/School-Github/NutGuardian/testing the model/squirl').iterdir()):
     img = load_img(img_path, target_size=(128, 128))
     img_array = img_to_array(img)
     img_batch = np.expand_dims(img_array, axis=0)
@@ -52,7 +52,7 @@ for count, img_path in enumerate(Path('/Users/neilganguly/Documents/School-Githu
 
     plt.subplot(4, 5, count + 1)
     plt.imshow(img)
-    plt.title('Actual: ' + img_path.stem[1:] + '\nPred: ' + title + '\n' + '%.3f'%prediction_array[0][prediction])
+    plt.title('Actual: ' + img_path.stem + '\nPred: ' + title + '\n' + '%.3f'%prediction_array[0][prediction])
 
 plt.tight_layout()
 plt.show()
