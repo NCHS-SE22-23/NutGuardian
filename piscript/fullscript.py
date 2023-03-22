@@ -53,7 +53,7 @@ vid = cv2.VideoCapture(0)
 
 # Setting up the audio system assuming we have already set the default device
 pygame.mixer.init()
-sound = pygame.mixer.Sound("noise.mp3")
+sound = pygame.mixer.Sound("whitenoise.mp3")
 
 # Once we detect motion, take pictures and send them to the neural network
 while True:
