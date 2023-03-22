@@ -35,7 +35,7 @@ model.load_weights('model.h5')
 
 plt.figure(figsize=(8.5, 8.5))
 
-for count, img_path in enumerate(Path('/Users/neilganguly/Documents/School-Github/NutGuardian/testing the model/squirl').iterdir()):
+for count, img_path in enumerate(Path('/Users/neilganguly/Documents/School-Github/NutGuardian/testing the model/sqrls').iterdir()):
     img = load_img(img_path, target_size=(128, 128))
     img_array = img_to_array(img)
     img_batch = np.expand_dims(img_array, axis=0)
