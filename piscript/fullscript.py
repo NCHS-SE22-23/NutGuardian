@@ -8,15 +8,20 @@ import numpy as np
 import time
 import subprocess
 import shutil
+import tensorflow as tf
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense, BatchNormalization
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from keras.utils import load_img, img_to_array
 from pathlib import Path
-import cv2
 from gpiozero import MotionSensor
 import pygame
+from picamera import PiCamera
+from gpiozero import MotionSensor
+from time import sleep
+import pygame
+from pygame.locals import *
 
 # Instantiate the model to get it running
 model = Sequential()
@@ -47,37 +52,37 @@ model.compile(loss='categorical_crossentropy', optimizer='rmsprop', metrics=['ac
 # Loading the relevant weights so the model will work
 model.load_weights('../model.h5')
 
-# Setting up the GPIO board so we can use the pin board
-pir = MotionSensor(2) # the int is the power pin for the motionsensor
-vid = cv2.VideoCapture(0)
+# Setting up the peripherals
+camera = PiCamera()
 
-# Setting up the audio system assuming we have already set the default device
-pygame.mixer.init()
-sound = pygame.mixer.Sound("whitenoise.mp3")
+camera.resolution = (128, 128)
+camera.framerate = 60
+camera.brightness = 50
+camera.saturation = 50
+
+pir = MotionSensor(15)
+
+pygame.init()
+pygame.mixer.music.load('/home/nutguardian/Desktop/nut-guardian/NutGuardian/piscript/whitenoise.mp3')
 
 # Once we detect motion, take pictures and send them to the neural network
 while True:
     pir.wait_for_motion(timeout=None)
 
-    # Recording the 30 pictures 
-    ret, frame = vid.read()
+    i = 0
 
-    # Creates the path for frames
-    path = Path('frames').absolute()
-
-    # Makes the directory and folder
-    path.mkdir()
-
-    # Converts video to 30 frames
-    subprocess.call('ffmpeg -i video.h264 -vf fps=10 frames/frame%03d.jpg')
-
-    # Adds all the frames to the frames folder
-    frames = Path.glob('frames/*.*')
+    # Recording the 15 pictures 
+    for i in range(15):
+        camera.capture('/home/nutguardian/Desktop/nut-guardian/NutGuardian/piscript/pic{}.jpg'.format(i))
 
     # Comparing number of preds to squirrels vs birds
     squirrel_count = 0
 
-    for count, img_path in enumerate(list(frames)):
+    i = 0
+
+    # Determine squirrel
+    for i in range(15):
+        img_path = '/home/nutguardian/Desktop/nut-guardian/NutGuardian/piscript/pic' + i + '.jpg'
         img = mpimg.imread(img_path)
         img = load_img(img_path, target_size=(128, 128))
         img_array = img_to_array(img)
@@ -93,14 +98,15 @@ while True:
         if prediction == 1:
             squirrel_count += 1
 
-    # Removes the folder afterwards
-    shutil.rmtree(path)
 
     # If determined to be a squirrel, play the speaker noise
-    if (squirrel_count > 15):
-        playing = sound.play()
-        while playing.get_busy():
-            pygame.time.delay(10000)
+    if (squirrel_count > 7):
+        #pygame.mixer.music.play()
+        sleep(7)
+        #pygame.mixer.music.stop()
+        print("SQRIILWEL")
+    else:
+        print("BIRB")
             
     # Wait for the next instance of no motion to return to the start of the loop
     pir.wait_for_no_motion(timeout=None)
