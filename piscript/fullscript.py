@@ -17,7 +17,7 @@ from keras.utils import load_img, img_to_array
 from pathlib import Path
 from gpiozero import MotionSensor
 import pygame
-from picamera import PiCamera
+from picamera2 import Picamera2
 from gpiozero import MotionSensor
 from time import sleep
 import pygame
@@ -50,10 +50,10 @@ model.add(Dense(2, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
 
 # Loading the relevant weights so the model will work
-model.load_weights('../model.h5')
+model.load_weights('model.h5')
 
 # Setting up the peripherals
-camera = PiCamera()
+camera = Picamera2()
 
 camera.resolution = (128, 128)
 camera.framerate = 60
