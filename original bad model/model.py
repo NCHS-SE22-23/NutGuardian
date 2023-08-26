@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 #Creates a CNN model
 def barbecue():
-    model = Sequential()
+    model = Sequential() 
 
     model.add(InputLayer(input_shape=(256, 256, 3)))
     model.add(Rescaling(1.0/255))

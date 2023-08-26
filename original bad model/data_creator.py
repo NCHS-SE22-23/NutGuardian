@@ -1,6 +1,6 @@
 from pathlib import Path
 from urllib import request
-import flickrapi
+import flickrapi 
 
 #Downloads the dataset from Flickr
 def prepare_ingredients():

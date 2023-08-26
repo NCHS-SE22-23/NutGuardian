@@ -5,7 +5,7 @@ from dataset_manipulation import chop_vegetables
 
 #USE TF LITE FOR RASPBERRY PI
 
-#Downloading the data
+#Downloading the data 
 if not Path('images').exists():
     prepare_ingredients()
 

@@ -4,7 +4,7 @@ from keras.utils import image_dataset_from_directory
 #Splits the dataset for training and validation
 def chop_vegetables(path):
     training, validation = image_dataset_from_directory(
-        path,
+        path, 
         seed=69420,
         validation_split=0.2,
         subset='both',
